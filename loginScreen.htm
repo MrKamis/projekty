@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Projekty by mrkamis</title>
+    <title>Logowanie</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="bower_components/w3css-themes/w3-theme-black.css">
     <link rel="stylesheet" href="bower_components/w3css-v3/w3.css">
@@ -12,13 +12,68 @@
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="js/main.js"></script>
 </head>
-<body class="w3-theme-l1" ng-app="my-projects">
+<body class="w3-theme-l1" ng-app="my-projects-login">
     <div class="w3-row">
         <div class="w3-col l2 s0 m0" style="opacity: 0;">
             AD
         </div>
-        <div class="w3-col l8 s12 m12 w3-padding w3-round" ng-controller="list-of-projects">
-            
+        <div class="w3-col l8 s12 m12 w3-padding w3-round" ng-controller="main">
+            <div class="w3-card w3-bottom w3-margin w3-padding w3-opacity {{notification.color}}" ng-show="notification.turn">
+                <h3 ng-bind="notification.title"></h3>
+            </div>
+            <div class="w3-bar">
+                <button class="w3-button w3-right" ng-click="back()">Cofnij do projektów</button>
+            </div>
+            <div ng-hide="user.logged">
+                <h3>Logowanie: </h3>
+                <label class="w3-row">
+                    <span class="w3-left">Login: </span>
+                    <input class="w3-input w3-left {{loginForm.loginStyle}}" ng-model="user.login">
+                </label>
+                <label class="w3-row">
+                    <span class="w3-left">Hasło: </span>
+                    <input class="w3-left w3-input {{loginForm.passwordStyle}}" type="password" ng-model="user.password">
+                </label>
+
+                <br>
+                <button class="w3-button" ng-click="login(user.login, user.password)">Zaloguj</button>
+            </div>
+            <div ng-show="user.logged">
+                <label class="w3-row">
+                    <h3>Dodawanie projektu: </h3><button class="w3-button w3-green" ng-click="showMore('new')">Dodaj</button>
+                </label>
+                <br>
+                <div ng-show="site.new" class="w3-border w3-border-black w3-round w3-padding">
+                    <label>Title: <input type="text" class="w3-input" ng-model="newProject.title"></label>
+                    <label>Author: <input type="text" class="w3-input" ng-model="newProject.author"></label>
+                    <label>Version: <input type="text" class="w3-input" ng-model="newProject.version"></label>
+                    <label>Last_modify: <input type="date" class="w3-input" ng-model="newProject.last_modify"></label>
+                    <label>Describe: <input type="text" class="w3-input" ng-model="newProject.describe"></label>
+                    <label>Href: <input type="text" class="w3-input" ng-model="newProject.href"></label>
+                    <label>Git: <input type="text" class="w3-input" ng-model="newProject.git"></label>
+                    <label>Tags(with ','): <input type="text" class="w3-input" ng-model="newProject.tags"></label>
+                    <br>
+                    <button class="w3-button" style="width: 100%;" ng-click="newProject.send()">Dodaj projekt</button>
+                </div>
+                <label class="w3-row">
+                    <h3>Edycja projektu: </h3><button class="w3-button w3-yellow" ng-click="showMore('edit')">Edytuj</button>
+                </label>
+                <div ng-show="site.edit">
+
+                </div>
+                <label class="w3-row">
+                    <h3>Usuwanie projektu: </h3><button class="w3-button w3-red" ng-click="showMore('delete')">Usuń</button>
+                </label>
+                <div ng-show="site.delete">
+                    <h3>Wybierz projekt do usunięcia: </h3>
+                    <ul class="w3-ul w3-border">
+                        <li ng-repeat="project in allProjects">
+                            <h3 ng-bind="project.title"></h3>
+                            <button class="w3-button w3-red" ng-click="delete(project)">Usuń</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </body>

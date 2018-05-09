@@ -7,10 +7,10 @@ CREATE TABLE listOfProjets(
     version TEXT,
     author TEXT,
     last_modify DATE,
-    describe TEXT,
+    project_describe TEXT,
     href TEXT,
     git TEXT,
     tags TEXT,
-    id PRIMARY KEY AUTO_INCREMENT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     blocked BOOLEAN
 );
