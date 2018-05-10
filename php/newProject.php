@@ -17,6 +17,16 @@
 
     try{
         if($db_query->execute()){
+
+            $db_query = $db_conn->prepare('SELECT * FROM users WHERE login=:login');
+            $db_query->bindParam(':login', $_POST['login']);
+            $db_query->execute();
+            $result = $db_query->fetchAll();
+
+            if($result[0]['permissions'] < 5){
+                throw new Exception('No permissions', 2);
+            }
+
             throw new Exception('Complete', 0);
         }else{
             throw new Exception('Error with inserting', 1);

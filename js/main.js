@@ -78,6 +78,9 @@ let app = angular.module('my-projects', [])
 
 let appLogowanie = angular.module('my-projects-login', [])
     .controller('main', ['$scope', '$http', '$window', ($scope, $http, $window) => {
+        $scope.editing = {
+            turn: false
+        };
         $scope.user = {
             login: '',
             password: '',
@@ -127,7 +130,8 @@ let appLogowanie = angular.module('my-projects-login', [])
                     method: 'POST',
                     url: 'php/newProject.php',
                     data: $.param({
-                        project: angular.toJson($scope.newProject)
+                        project: angular.toJson($scope.newProject),
+                        login: $scope.user.login
                     }),
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
@@ -222,6 +226,40 @@ let appLogowanie = angular.module('my-projects-login', [])
                             break;
                         case '1':
                             $scope.notification.open('Brak uprawnien', 'red');
+                            break;
+                    }
+                    return false;
+                });
+        };
+        $scope.edit = project => {
+            $scope.editing.turn = true;
+            $scope.editing.project = project;
+            $scope.oldProject = project;
+            $scope.site.edit = false;
+            return true;
+        };
+        $scope.editingClose = () => {
+            $scope.editing.turn = false;
+            $http({
+                method: 'POST',
+                url: 'php/updateProject.php',
+                data: $.param({
+                    project: angular.toJson($scope.editing.newProject),
+                    login: $scope.user.login,
+                    oldProject: angular.toJson($scope.oldProject)
+                }),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+                .then(response => {
+                    switch(response.data){
+                        case '0':
+                            $scope.notification.open('Zauktulizowano projekt!', 'green');
+                            return true;
+                            break;
+                        case '2':
+                            $scope.notification.open('Brak uprawnien!', 'red');
                             break;
                     }
                     return false;

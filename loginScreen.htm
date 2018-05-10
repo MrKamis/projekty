@@ -59,7 +59,25 @@
                     <h3>Edycja projektu: </h3><button class="w3-button w3-yellow" ng-click="showMore('edit')">Edytuj</button>
                 </label>
                 <div ng-show="site.edit">
+                    <h3>Wybierz projekt do edycji: </h3>
+                    <ul class="w3-ul w3-border">
+                        <li ng-repeat="project in allProjects track by $index">
+                            <h3 ng-bind="project.title"></h3>
+                            <button class="w3-button w3-yellow" ng-click="edit(project)">Edytuj</button>
+                        </li>
+                    </ul>
+                </div>
+                <br>
+                <div ng-show="editing.turn" class="w3-container w3-border w3-border-black w3-round w3-padding-large">
+                    <header>
+                        <h3>Edycja projektu: </h3>
+                    </header>
+                    <label>Zmiana tytułu: <input type="text" ng-model="editing.newProject.newTitle" placeholder="{{editing.project.title}}" class="w3-input"></label>
+                    <label>Zmiana opisu: <input type="text" ng-model="editing.newProject.newDescribe" placeholder="{{editing.project.title}}" class="w3-input"></label>
+                    <label>Zmiana git: <input type="text" ng-model="editing.newProject.newGit" placeholder="{{editing.project.git}}" class="w3-input"></label>
+                    <label>Zmiana href: <input type="text" ng-model="editing.newProject.newHref" placeholder="{{editing.project.href}}" class="w3-input"></label>
 
+                    <button class="w3-button w3-green w3-padding w3-round" style="width: 100%;" ng-click="editingClose()">Zatwierdź zmiany</button>
                 </div>
                 <label class="w3-row">
                     <h3>Usuwanie projektu: </h3><button class="w3-button w3-red" ng-click="showMore('delete')">Usuń</button>
@@ -67,7 +85,7 @@
                 <div ng-show="site.delete">
                     <h3>Wybierz projekt do usunięcia: </h3>
                     <ul class="w3-ul w3-border">
-                        <li ng-repeat="project in allProjects">
+                        <li ng-repeat="project in allProjects track by $index">
                             <h3 ng-bind="project.title"></h3>
                             <button class="w3-button w3-red" ng-click="delete(project)">Usuń</button>
                         </li>
